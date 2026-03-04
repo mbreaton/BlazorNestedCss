@@ -1,0 +1,75 @@
+﻿.budget-summary {
+    font-size: 1rem;
+    position: absolute;
+    left: 10px;
+
+    a * {
+        border: 1px solid red;
+    }
+
+    .label {
+        display: inline-block;
+        width: 6rem;
+        content: "EOL";
+        text-align: right;
+        color: #888;
+    }
+
+        .label ::deep select {
+            padding: 0 5px;
+        }
+
+    .low-funds {
+        color: red !important;
+    }
+
+    .future-value {
+        font-weight: bold;
+        display: inline-block;
+        width: 6rem;
+        text-align: right;
+    }
+
+    .present-value {
+        font-size: 90%;
+        color: #888;
+
+        &::before {
+            content: "(pv: ";
+        }
+
+        &::after {
+            content: ")";
+        }
+    }
+}
+
+.spinner-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    align-content: center;
+
+    .spinner-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: gray;
+        opacity: 10%;
+    }
+
+    .spinner-indicator {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        text-align: center;
+        align-content: center;
+        color: violet;
+    }
+}

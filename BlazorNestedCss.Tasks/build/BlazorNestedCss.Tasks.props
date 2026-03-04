@@ -1,0 +1,6 @@
+<Project>
+	<PropertyGroup>
+		<!-- Disable the built-in Razor SDK CSS rewrite -->
+		<DisableRewriteCss>false</DisableRewriteCss>
+	</PropertyGroup>
+</Project>

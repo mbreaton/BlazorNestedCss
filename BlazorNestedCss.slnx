@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="global.json" />
+    <File Path="nuget.config" />
+  </Folder>
+  <Project Path="BlazorNestedCss.Tasks/BlazorNestedCss.Tasks.csproj" />
+  <Project Path="BlazorNestedCss.Tests/BlazorNestedCss.Tests.csproj" />
+</Solution>

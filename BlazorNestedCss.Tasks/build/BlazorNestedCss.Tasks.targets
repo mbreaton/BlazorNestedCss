@@ -1,0 +1,12 @@
+<Project>
+
+	<UsingTask
+		TaskName="BlazorNestedCss.Tasks.RewriteCss"
+		AssemblyFile="$(MSBuildThisFileDirectory)..\lib\netstandard2.0\BlazorNestedCss.Tasks.dll" />
+
+	<Target Name="BlazorNestedCss_Rewrite"
+			BeforeTargets="ProcessStaticWebAssets">
+		<RewriteCss InputFiles="@(Content)" />
+	</Target>
+
+</Project>

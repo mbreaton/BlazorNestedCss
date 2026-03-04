@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>Latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+		<IsPackable>true</IsPackable>
+		<Version>1.0.0</Version>
+		<PackageReadmeFile>readme.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Build.Framework" Version="18.3.3" />
+		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="18.3.3" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<PackageOutputPath>$(MSBuildProjectDirectory)\..\packages</PackageOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="build\BlazorNestedCss.Tasks.props" Pack="true" PackagePath="build\" />
+		<None Include="build\BlazorNestedCss.Tasks.targets" Pack="true" PackagePath="build\" />
+		<None Include="readme.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+</Project>
