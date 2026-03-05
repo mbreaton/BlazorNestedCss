@@ -43,6 +43,22 @@ interception was successful:
 ************************************
 ```
 
+### Notes
+
+The following CSS usage is supported and validated in xUnit test files:
+- support for `::deep` anywhere in selector
+- support for names in `animations`
+- support for multiple selectors (those separated by `,`)
+- support for block comments in selectors/declarations
+- support for line comments (`//`) by converting to block comments (`/* .. */`)
+- support for `&` in selectors
+- support for quoted strings (both `"` and `'`)
+- support for nested `:has(...)` and similar pseudo classes
+- support for `@` at blocks
+
+### Limitations
+- no support for local CSS variables (`--var-name`)
+
 ## DISCLAIMER
 
 I am not a CSS nor SDK pipeline expert. This is simply **my** attempt to get **my** project components to behave 

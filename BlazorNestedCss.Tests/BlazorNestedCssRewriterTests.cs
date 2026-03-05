@@ -420,6 +420,29 @@ public class BlazorNestedCssRewriterTests
     }
 
     [Fact]
+    public void CssRewrite_Adds_Scope_To_AtContainer_Blocks()
+    {
+        var cssText = @"
+@container (max-width: 105rem) {
+    .card-container {
+        grid-template-columns: auto;
+    }
+}";
+        var expected = @"
+@container (max-width: 105rem) {
+    .card-container[b-scope] {
+        grid-template-columns: auto;
+    }
+}";
+
+        var root = _parser.Parse(cssText);
+        new BlazorScopeRewriter().Rewrite(root, "b-scope");
+        var output = _parser.Generate(root);
+
+        Assert.Equal(prefix + expected, output);
+    }
+
+    [Fact]
     public void CssRewrite_Adds_Scope_To_AtKeyframe_Blocks()
     {
         var cssText = @"
@@ -472,6 +495,8 @@ public class BlazorNestedCssRewriterTests
     animation: name 1s ease-out forwards,1s ease-out forwards name;
     animation: name 1s ease-out forwards, 1s ease-out forwards name;
     animation: name 1s ease-out forwards ,1s ease-out forwards name;
+    animation: fade-up var(--duration-slow) var(--ease-spring) both;
+    animation-delay: calc(var(--i, 0) * 60ms);
     not-animation: name;
     .animation {
         animation:
@@ -496,6 +521,8 @@ public class BlazorNestedCssRewriterTests
     animation: name-b-scope 1s ease-out forwards,1s ease-out forwards name-b-scope;
     animation: name-b-scope 1s ease-out forwards, 1s ease-out forwards name-b-scope;
     animation: name-b-scope 1s ease-out forwards ,1s ease-out forwards name-b-scope;
+    animation: fade-up-b-scope var(--duration-slow) var(--ease-spring) both;
+    animation-delay: calc(var(--i, 0) * 60ms);
     not-animation: name;
     .animation[b-scope] {
         animation:

@@ -65,6 +65,10 @@ public class BlazorScopeRewriter
             {
                 return continueScoping;
             }
+            else if (selector.StartsWith("@container"))
+            {
+                return continueScoping;
+            }
             else if (selector.StartsWith("@keyframes"))
             {
                 if (continueScoping)
@@ -109,6 +113,12 @@ public class BlazorScopeRewriter
         return continueScoping;
     }
 
+    static List<string> animationTimingFunctions = new(["linear", "ease", "ease-in", "ease-out", "ease-in-out", "step-start"]);
+    static List<string> animationFillModes = new(["forwards", "backwards", "both", "none"]);
+    static List<string> animationDirections = new List<string>(["normal", "reverse", "alternate", "alternate-reverse"]);
+    static List<string> animationPlayStates = new List<string>(["running", "paused"]);
+    static List<string> animationPlayCounts = new List<string>(["infinite"]);
+
     private void AddDeclarationScope(Token token, string scope)
     {
         var pieces = SplitIntoParts(token.Value, ':', ';', ',');
@@ -147,44 +157,49 @@ public class BlazorScopeRewriter
                     continue;
                 }
 
+                if (IsCssFunction(piece))
+                {
+                    result.Add(piece);
+                    continue;
+                }
+
                 // Skip durations (1s, 200ms)
-                if (piece.EndsWith("ms", StringComparison.OrdinalIgnoreCase) ||
-                    piece.EndsWith("s", StringComparison.OrdinalIgnoreCase))
+                if (char.IsNumber(piece[0]) && piece.EndsWith("s", StringComparison.OrdinalIgnoreCase))
                 {
                     result.Add(piece);
                     continue;
                 }
 
                 // Skip timing functions
-                if (piece is "ease" or "ease-in" or "ease-out" or "ease-in-out" or "linear")
+                if (animationTimingFunctions.Contains(piece))
                 {
                     result.Add(piece);
                     continue;
                 }
 
                 // Skip iteration counts
-                if (int.TryParse(piece, out _))
+                if (animationPlayCounts.Contains(piece) || int.TryParse(piece, out _))
                 {
                     result.Add(piece);
                     continue;
                 }
 
                 // Skip fill modes
-                if (piece is "forwards" or "backwards" or "both" or "none")
+                if (animationFillModes.Contains(piece))
                 {
                     result.Add(piece);
                     continue;
                 }
 
                 // Skip directions
-                if (piece is "normal" or "reverse" or "alternate" or "alternate-reverse")
+                if (animationDirections.Contains(piece))
                 {
                     result.Add(piece);
                     continue;
                 }
 
                 // Skip play states
-                if (piece is "running" or "paused")
+                if (animationPlayStates.Contains(piece))
                 {
                     result.Add(piece);
                     continue;
@@ -195,6 +210,11 @@ public class BlazorScopeRewriter
             }
 
             return result;
+        }
+
+        bool IsCssFunction(string ident)
+        {
+            return ident.Contains('(');
         }
     }
 
