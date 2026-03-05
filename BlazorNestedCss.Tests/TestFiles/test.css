@@ -1,75 +1,160 @@
-﻿.budget-summary {
-    font-size: 1rem;
-    position: absolute;
-    left: 10px;
+﻿/* ── TOKENS ─────────────────────────────── */
+:root {
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-smooth: cubic-bezier(0.45, 0, 0.15, 1);
+    --duration-fast: 120ms;
+    --duration-base: 240ms;
+    --duration-slow: 480ms;
+}
 
-    a * {
-        border: 1px solid red;
+/* ── KEYFRAMES ──────────────────────────── */
+@keyframes fade-up {
+    from {
+        opacity: 0;
+        translate: 0 1rem;
     }
 
-    .label {
-        display: inline-block;
-        width: 6rem;
-        content: "EOL";
-        text-align: right;
-        color: #888;
+    to {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 8px hsl(220 80% 62% / 0.3);
     }
 
-        .label ::deep select {
-            padding: 0 5px;
-        }
+    50% {
+        box-shadow: 0 0 24px hsl(220 80% 62% / 0.8);
+    }
+}
 
-    .low-funds {
-        color: red !important;
+@keyframes spin {
+    to {
+        rotate: 1turn;
+    }
+}
+
+/* ── BUTTON ─────────────────────────────── */
+.btn {
+    padding: var(--space-3) var(--space-6);
+    background: var(--color-brand);
+    transition: filter var(--duration-fast) var(--ease-smooth), transform var(--duration-fast) var(--ease-spring);
+
+    &:hover {
+        filter: brightness(1.12);
     }
 
-    .future-value {
-        font-weight: bold;
-        display: inline-block;
-        width: 6rem;
-        text-align: right;
+    &:active {
+        transform: scale(0.97);
     }
 
-    .present-value {
-        font-size: 90%;
-        color: #888;
+    &.btn--ghost {
+        background: transparent;
+        border: 1.5px solid currentColor;
+    }
 
-        &::before {
-            content: "(pv: ";
-        }
+    &.btn--danger {
+        background: var(--color-danger);
+    }
+    /* Spinner inside button */
+    &:has(.spinner) {
+        pointer-events: none;
 
-        &::after {
-            content: ")";
+        & .spinner {
+            animation: spin 0.8s linear infinite;
         }
     }
 }
 
-.spinner-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    align-content: center;
+/* ── CARD ───────────────────────────────── */
+.card {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    animation: fade-up var(--duration-slow) var(--ease-spring) both;
+    transition: transform var(--duration-base) var(--ease-spring);
 
-    .spinner-background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: gray;
-        opacity: 10%;
+    &:hover {
+        transform: translateY(-4px);
     }
 
-    .spinner-indicator {
+    &__media img {
+        transition: transform var(--duration-slow) var(--ease-smooth);
+    }
+
+    &:hover &__media img {
+        transform: scale(1.06);
+    }
+    /* Glowing featured variant */
+    &--featured {
+        border-color: var(--color-accent);
+        animation: fade-up var(--duration-slow) var(--ease-spring) both, pulse-glow 2.5s var(--ease-smooth) infinite;
+    }
+
+    @container card (width < 280px) {
+        & .card__body {
+            padding: var(--space-4);
+        }
+    }
+}
+
+/* ── FORM ───────────────────────────────── */
+.form-field {
+    & input {
+        border: 1.5px solid var(--color-border);
+        transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+
+        &:focus {
+            border-color: var(--color-brand);
+            box-shadow: 0 0 0 3px hsl(220 80% 62% / 0.2);
+        }
+    }
+
+    &:has(input:invalid:not(:placeholder-shown)) {
+        & label {
+            color: var(--color-danger);
+        }
+
+        & input {
+            border-color: var(--color-danger);
+        }
+    }
+}
+
+/* ── NAV LINK ───────────────────────────── */
+.nav > a {
+    position: relative;
+    transition: color var(--duration-fast);
+    /* Sliding underline */
+    &::after {
+        content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        text-align: center;
-        align-content: center;
-        color: violet;
+        inset-inline: 0;
+        inset-block-end: -2px;
+        block-size: 2px;
+        background: var(--color-brand);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform var(--duration-base) var(--ease-spring);
+    }
+
+    &:hover::after,
+    &[aria-current="page"]::after {
+        transform: scaleX(1);
+    }
+}
+
+/* ── STAGGER ────────────────────────────── */
+.stagger > * {
+    animation: fade-up var(--duration-slow) var(--ease-spring) both;
+    animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+/* ── REDUCED MOTION ─────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
     }
 }
