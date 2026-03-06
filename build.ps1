@@ -17,6 +17,9 @@ if ($deploy) {
         Write-Error "No nuget server defined for deployment"
         exit
     }
-    
-    dotnet nuget push -s $nugetServer "$PSScriptRoot/packages/BlazorNestedCss.Tasks.1.0.0.nupkg"
+
+    [xml]$proj = Get-Content "$PSScriptRoot/src/BlazorNestedCss.Tasks/BlazorNestedCss.Tasks.csproj"
+    $version = $proj.SelectSingleNode("//Version").InnerText
+    Write-Host "Publshing packages/BlazorNestedCss.Tasks.$version.nupkg..."
+    dotnet nuget push -s $nugetServer "$PSScriptRoot/packages/BlazorNestedCss.Tasks.$version.nupkg"
 }
