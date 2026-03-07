@@ -29,7 +29,7 @@ same result can be accomplished by updating any `.csproj` file directly with the
 
 ### Steps
 
-1. "build" and "pack" `BlazorNestedCss.Tasks`
+1. run `./build.ps1` (use the `-deploy` switch to also deploy to a nuget server)
 1. add a reference to the generated `./packages/BlazorNestedCss.Tasks.1.0.0.nuget` package from the target project needing nested CSS support
 1. perform a full rebuild of the target project, the following should appear in the build output, indicating the
 interception was successful:
