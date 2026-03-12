@@ -73,9 +73,9 @@ public sealed class RewriteCss : Task
             }
         });
 
-        var fp = filesProceesed;
-        Log.LogMessage(MessageImportance.High, $"*** Added scope to {fp,5} files.  ***");
-        Log.LogMessage(MessageImportance.High, $"*** Revisit after SDK 10.0.103   ***");
+        var c = filesProceesed;
+        Log.LogMessage(MessageImportance.High, $"*** Added scope to {c,5} files.  ***");
+        Log.LogMessage(MessageImportance.High, $"*** Revisit after SDK 10.0.200   ***");
         Log.LogMessage(MessageImportance.High, $"************************************");
 
         return true;

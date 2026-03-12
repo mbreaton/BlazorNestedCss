@@ -7,7 +7,7 @@
 		<Nullable>enable</Nullable>
 		<AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
 		<IsPackable>true</IsPackable>
-		<Version>1.0.0</Version>
+		<Version>10.0.200</Version>
 		<PackageReadmeFile>readme.md</PackageReadmeFile>
 	</PropertyGroup>
 
@@ -17,7 +17,7 @@
 	</ItemGroup>
 
 	<PropertyGroup>
-		<PackageOutputPath>$(MSBuildProjectDirectory)\..\packages</PackageOutputPath>
+		<PackageOutputPath>$(MSBuildProjectDirectory)\..\..\packages</PackageOutputPath>
 	</PropertyGroup>
 
 	<ItemGroup>
