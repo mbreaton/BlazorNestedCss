@@ -7,13 +7,13 @@
 		<Nullable>enable</Nullable>
 		<AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
 		<IsPackable>true</IsPackable>
-		<Version>10.0.300</Version>
+		<Version>10.0.400</Version>
 		<PackageReadmeFile>readme.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Build.Framework" Version="18.4.0" />
-		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="18.4.0" />
+		<PackageReference Include="Microsoft.Build.Framework" Version="18.9.6" />
+		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="18.9.6" />
 	</ItemGroup>
 
 	<PropertyGroup>
