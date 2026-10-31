@@ -2,69 +2,69 @@
 
 ## Introduction
 
-The purpose of this repository is to provide support for Blazor component isolated CSS files when using nested CSS
+The purpose of this repository is to provide support for nested CSS in Blazor component CSS isolation files
 (see [CSS nesting](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Nesting)).
 
 ### Blazor Component Scoping
 
-Blazor (among other frameworks) supports components and component CSS isolation support by adding "scope" attributes to generated 
-HTML elements and then rewriting the associated component CSS files to add those attributes to achieve the CSS isolation.
+Blazor, like many other frameworks, supports CSS isolation for components by adding "scope" attributes to generated
+HTML elements. It then rewrites the associated component CSS files to include those attributes.
 
-As of SDK v10.0.103, dotnet does not support this when using nested CSS and, during the rewrite stage, will not generate 
-proper CSS (see [CSS nesting does not work fully in isolated CSS files #52422](https://github.com/dotnet/aspnetcore/issues/52422)) 
-on the dotnet github site.
+As of SDK version 10.0.103, .NET does not fully support nested CSS in isolated CSS files. During the rewrite stage,
+it may generate invalid or incorrect CSS. See [CSS nesting does not work fully in isolated CSS files #52422](https://github.com/dotnet/aspnetcore/issues/52422)
+on GitHub.
 
-### Problem Area/Solution
+### Problem and Solution
 
-The deficiency has been narrowed down to the RewriteCSS Task Module in the .Net 10 SDK and needs to be addressed.
-In the meantime, this solution attempts to provide a temporary fix until such time the SDK is updated.
+The issue has been traced to the `RewriteCSS` task in the .NET 10 SDK. Until the SDK is updated, this project provides
+a temporary workaround.
 
-It accomplishes the this by disabling the built-in RewriteCss task (`build/BlazorNestedCss.Tasks.props`) and adding a new task
-before the `ProcessStaticWebAssets` build step (`build/BlazorNestedCss.Tasks.targets`).
+It disables the built-in `RewriteCss` task (`build/BlazorNestedCss.Tasks.props`) and adds a replacement task before the
+`ProcessStaticWebAssets` build step (`build/BlazorNestedCss.Tasks.targets`).
 
 ## Usage
 
-This project provides the replacement build step via its generated nuget package, although the
-same result can be accomplished by updating any `.csproj` file directly with the content of the above `.props` and `.targets` content.
+This project provides the replacement build step through its generated NuGet package. The same result can be achieved by
+adding the contents of the `.props` and `.targets` files directly to a target project's `.csproj` file.
 
 ### Steps
 
-1. run `./build.ps1` (use the `-deploy` switch to also deploy to a nuget server)
-1. add a reference to the generated `./packages/BlazorNestedCss.Tasks.1.0.0.nuget` package from the target project needing nested CSS support
-1. perform a full rebuild of the target project, the following should appear in the build output, indicating the
-interception was successful:
+1. Run `./build.ps1` (use the `-deploy` switch to also deploy the package to a NuGet server).
+2. Add a reference to the generated `./packages/BlazorNestedCss.Tasks.1.0.0.nuget` package from the target project that needs nested CSS support.
+3. Perform a full rebuild of the target project. The following message should appear in the build output, indicating that
+   the interception was successful:
 ```
 ************************************
 *** Starting Blazor CSS Rewriter ***
-*** Version: 1.0.0.0             ***
-*** Built on: 2026-02-28 @08:57  ***
-*** Added scope to    54 files.  ***
-*** Revisit after SDK 10.0.103   ***
+*** Version: 10.0.403.0          ***
+*** Built on: 2026-10-27 @10:56  ***
+*** Added scope to    62 files.  ***
+*** Revisit after SDK 10.0.403   ***
 ************************************
 ```
 
 ### Notes
 
-The following CSS usage is supported and validated in xUnit test files:
-- support for `::deep` anywhere in selector
-- support for names in `animations`
-- support for multiple selectors (those separated by `,`)
-- support for block comments in selectors/declarations
-- support for line comments (`//`) by converting to block comments (`/* .. */`)
-- support for `&` in selectors
-- support for quoted strings (both `"` and `'`)
-- support for nested `:has(...)` and similar pseudo classes
-- support for `@` at blocks
+The following CSS scenarios are supported and validated by the xUnit tests:
+- `::deep` anywhere in a selector
+- animation names
+- multiple selectors separated by commas
+- block comments in selectors and declarations
+- line comments (`//`) converted to block comments (`/* ... */`)
+- `&` in selectors
+- quoted strings using either `"` or `'`
+- nested `:has(...)` and similar pseudo-classes
+- at-rules
 
 ### Limitations
-- no support for local CSS variables (`--var-name`)
+- No support for local CSS variables (`--var-name`)
 
 ## DISCLAIMER
 
-I am not a CSS nor SDK pipeline expert. This is simply **my** attempt to get **my** project components to behave 
-properly alongside nested CSS files. Much of the code was written with some help from AI and tweaked to get the 
-included xUnit tests to pass. I may have missed some things, while some others may have been too complex for
-me to properly handle (e.g., local css variables to name just one)
+I am neither a CSS nor an SDK pipeline expert. This project is my attempt to make my application components work
+properly with nested CSS files. Much of the code was written with help from AI and then refined until the included
+xUnit tests passed. There may be unsupported scenarios or cases that have been handled incorrectly, such as local CSS
+variables.
 
 
 
